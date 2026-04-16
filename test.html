@@ -17,7 +17,7 @@ function handleUrlParams(params) {
   }
   params.forEach((value, key) => {
     const paramKey = `p_${key}`;
-    if (!sessionStorage.getItem(paramKey) && specialParams.includes(paramKey)) {
+    if (specialParams.includes(paramKey)) {
       if (!discountsAllowed) return;
       if (paramKey === "p_dc" && !allowedDcValues.includes(value)) return;
       sessionStorage.setItem(paramKey, value);
@@ -53,7 +53,6 @@ if (localStorage.getItem('sK_r')) {
       ? baseNext + '?' + urlParams.toString()
       : baseNext;
     nextPageSlug = withQuery && !withQuery.startsWith('/') ? '/69df624dcb0ef7afbe5e30e8-preview/' + withQuery : withQuery;
-    handleUrlParams(urlParams);
 
     document.addEventListener("DOMContentLoaded", () => {
       MVMT.init('69df624dcb0ef7afbe5e30e8', 'LandingPage')
@@ -78,7 +77,7 @@ if (localStorage.getItem('sK_r')) {
 const route = async () => {
   if (localStorage.getItem('sK_r')) return JSON.parse(localStorage.getItem('sK_r'));
   const sessionId = MVMT.getSessionId() || localStorage.getItem("mvmt_session_id") || "";
-  const url = 'https://func-ab-test-events-staging-001.azurewebsites.net/api/checkRoute?id=69df624dcb0ef7afbe5e30e8&v=177624760484751&sessionId='+sessionId;
+  const url = 'https://func-ab-test-events-staging-001.azurewebsites.net/api/checkRoute?id=69df624dcb0ef7afbe5e30e8&v=177633890127486&sessionId='+sessionId;
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error('Network response was not ok');
@@ -130,9 +129,7 @@ const nextPage = async () => {
   return absolute;
 }
 const urlParams = new URLSearchParams(window.location.search);
-urlParams.forEach((value, key) => {
-  sessionStorage.setItem(key, value);
-});
+handleUrlParams(urlParams);
 
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", (event) => {
